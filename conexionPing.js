@@ -1,13 +1,3 @@
-import dotenv from 'dotenv';    
-import express from 'express';
-import { MongoClient, ServerApiVersion } from 'mongodb';
-
-dotenv.config();
-
-const app = express();
-const PORT = 3000;
-
-const uri = process.env.MONGODB_URI;
 
 const client = new MongoClient(uri, {
     serverApi: {
@@ -15,18 +5,31 @@ const client = new MongoClient(uri, {
         strict: true,
         deprecationErrors: true,
     }
-})
+});
+async function run () {
 
 app.get('/products', async (req, res) => {  
     try {
         await client.connect();
-        const db = client.db('SocialNetwork');
-        const products = db.collection('Publisher');
-        const lista = await products.find({}).toArray();
-        res.json({success: true, data: lista});
-    } catch (error) {
-        res.status(500).json({success: false, error: error.message});
-    } finally {
-        await client.close;
+        await client.db(""). comand({ ping: 1 });
+        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+        
+        const dbName = "");
+        const adninDb = client.db('')
+        const dbList = await adminDb().listDatabases();
+        cons exists = dbList.database.some((db) => db.name === dbName;
+        
+       if (exists) {
+           console.log(`La base de datos "${dbName}" existe.`);
+       } else {    
+           console.log(`La base de datos "${dbName}" NO existe.`);
+       }
     }
-})
+    } catch (error) {
+         console.log("Error connecting to MongoDB:", error);
+    }
+      finally {
+          await client.close();
+    }
+}
+run().catch(console.dir);
